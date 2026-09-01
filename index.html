@@ -1,947 +1,613 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Kite — Discord Bot</title>
-
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: Arial, sans-serif;
-    }
-
-    html {
-        scroll-behavior: smooth;
-    }
-
-    body {
-        background: #0b0b12;
-        color: white;
-        min-height: 100vh;
-    }
-
-    nav {
-        width: 100%;
-        padding: 22px 8%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background: #0b0b12;
-        gap: 20px;
-    }
-
-    .logo {
-        font-size: 25px;
-        font-weight: bold;
-    }
-
-    .nav-right {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-
-    .nav-button {
-        text-decoration: none;
-        color: white;
-        background: #5865F2;
-        padding: 11px 18px;
-        border-radius: 8px;
-        font-weight: bold;
-        transition: 0.2s;
-        border: none;
-        cursor: pointer;
-    }
-
-    .nav-button:hover {
-        transform: translateY(-2px);
-        opacity: 0.9;
-    }
-
-    .profile-area {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .profile-link {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        text-decoration: none;
-        color: white;
-        font-weight: bold;
-    }
-
-    .profile-avatar {
-        width: 42px;
-        height: 42px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 2px solid #30303c;
-    }
-
-    .logout-button {
-        background: #191923;
-        border: 1px solid #30303c;
-        color: #b9b9c7;
-        padding: 9px 12px;
-        border-radius: 8px;
-        cursor: pointer;
-    }
-
-    .logout-button:hover {
-        border-color: #5865F2;
-        color: white;
-    }
-
-    /* HERO */
-
-    .hero {
-        min-height: 70vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        padding: 40px 20px;
-    }
-
-    .hero h1 {
-        font-size: clamp(55px, 10vw, 100px);
-        margin-bottom: 15px;
-    }
-
-    .hero h1 span {
-        color: #5865F2;
-    }
-
-    .hero p {
-        max-width: 700px;
-        color: #b9b9c7;
-        font-size: 18px;
-        line-height: 1.7;
-        margin-bottom: 30px;
-    }
-
-    .buttons {
-        display: flex;
-        gap: 15px;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    .button {
-        text-decoration: none;
-        padding: 14px 24px;
-        border-radius: 9px;
-        font-weight: bold;
-        transition: 0.2s;
-    }
-
-    .invite {
-        background: #5865F2;
-        color: white;
-    }
-
-    .commands {
-        background: #191923;
-        color: white;
-        border: 1px solid #30303c;
-    }
-
-    .button:hover {
-        transform: translateY(-3px);
-    }
-
-    /* FEATURES */
-
-    .section {
-        padding: 70px 8%;
-        text-align: center;
-    }
-
-    .section h2 {
-        font-size: 36px;
-        margin-bottom: 40px;
-    }
-
-    .features {
-        max-width: 1000px;
-        margin: auto;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 20px;
-    }
-
-    .feature {
-        background: #13131c;
-        border: 1px solid #252532;
-        border-radius: 14px;
-        padding: 30px 20px;
-        transition: 0.2s;
-    }
-
-    .feature:hover {
-        transform: translateY(-5px);
-        border-color: #5865F2;
-    }
-
-    .feature h3 {
-        margin-bottom: 12px;
-        font-size: 21px;
-    }
-
-    .feature p {
-        color: #a7a7b5;
-        line-height: 1.6;
-    }
-
-    /* SERVER LIST */
-
-    #dashboard {
-        display: none;
-        padding: 70px 8%;
-        background: #0e0e17;
-        border-top: 1px solid #1d1d27;
-        border-bottom: 1px solid #1d1d27;
-    }
-
-    .dashboard-container {
-        max-width: 1100px;
-        margin: auto;
-    }
-
-    .dashboard-header {
-        text-align: left;
-        margin-bottom: 30px;
-    }
-
-    .dashboard-header h2 {
-        font-size: 36px;
-        margin-bottom: 8px;
-    }
-
-    .dashboard-header p {
-        color: #9999aa;
-    }
-
-    .servers-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-        gap: 18px;
-    }
-
-    .server-card {
-        background: #13131c;
-        border: 1px solid #252532;
-        border-radius: 14px;
-        padding: 20px;
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        transition: 0.2s;
-    }
-
-    .server-card:hover {
-        transform: translateY(-3px);
-        border-color: #5865F2;
-    }
-
-    .server-icon {
-        width: 58px;
-        height: 58px;
-        border-radius: 16px;
-        object-fit: cover;
-        flex-shrink: 0;
-        background: #191923;
-    }
-
-    .server-icon-placeholder {
-        width: 58px;
-        height: 58px;
-        border-radius: 16px;
-        background: #5865F2;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 22px;
-        font-weight: bold;
-        flex-shrink: 0;
-    }
-
-    .server-info {
-        min-width: 0;
-        flex: 1;
-        text-align: left;
-    }
-
-    .server-info h3 {
-        font-size: 17px;
-        margin-bottom: 5px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .server-info p {
-        color: #858594;
-        font-size: 13px;
-        margin-bottom: 10px;
-    }
-
-    .manage-button {
-        display: inline-block;
-        text-decoration: none;
-        color: white;
-        background: #5865F2;
-        padding: 7px 12px;
-        border-radius: 7px;
-        font-size: 13px;
-        font-weight: bold;
-        border: none;
-        cursor: pointer;
-    }
-
-    .no-servers {
-        background: #13131c;
-        border: 1px solid #252532;
-        border-radius: 14px;
-        padding: 35px;
-        color: #9999aa;
-        text-align: center;
-    }
-
-    /* SERVER SETTINGS */
-
-    #server-settings {
-        display: none;
-        min-height: 100vh;
-        padding: 50px 8%;
-        background: #0b0b12;
-    }
-
-    .settings-container {
-        max-width: 1100px;
-        margin: auto;
-    }
-
-    .back-button {
-        display: inline-block;
-        background: #191923;
-        border: 1px solid #30303c;
-        color: #b9b9c7;
-        padding: 10px 16px;
-        border-radius: 8px;
-        text-decoration: none;
-        margin-bottom: 30px;
-    }
-
-    .back-button:hover {
-        color: white;
-        border-color: #5865F2;
-    }
-
-    .server-title {
-        display: flex;
-        align-items: center;
-        gap: 18px;
-        margin-bottom: 35px;
-    }
-
-    .large-server-icon {
-        width: 75px;
-        height: 75px;
-        border-radius: 20px;
-        object-fit: cover;
-        background: #191923;
-    }
-
-    .server-title h1 {
-        font-size: 32px;
-        margin-bottom: 6px;
-    }
-
-    .server-title p {
-        color: #858594;
-    }
-
-    .settings-layout {
-        display: grid;
-        grid-template-columns: 230px 1fr;
-        gap: 25px;
-    }
-
-    .settings-menu {
-        background: #13131c;
-        border: 1px solid #252532;
-        border-radius: 14px;
-        padding: 10px;
-        height: fit-content;
-    }
-
-    .menu-item {
-        width: 100%;
-        background: transparent;
-        border: none;
-        color: #a7a7b5;
-        text-align: left;
-        padding: 12px 14px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 14px;
-        margin-bottom: 3px;
-    }
-
-    .menu-item:hover,
-    .menu-item.active {
-        background: #191923;
-        color: white;
-    }
-
-    .settings-content {
-        background: #13131c;
-        border: 1px solid #252532;
-        border-radius: 14px;
-        padding: 30px;
-    }
-
-    .settings-content h2 {
-        margin-bottom: 8px;
-        font-size: 25px;
-    }
-
-    .settings-content > p {
-        color: #8f8f9e;
-        margin-bottom: 30px;
-    }
-
-    .setting-box {
-        background: #0f0f17;
-        border: 1px solid #252532;
-        border-radius: 10px;
-        padding: 20px;
-        margin-bottom: 15px;
-    }
-
-    .setting-box h3 {
-        font-size: 16px;
-        margin-bottom: 7px;
-    }
-
-    .setting-box p {
-        color: #858594;
-        font-size: 14px;
-        line-height: 1.5;
-    }
-
-    .coming-soon {
-        display: inline-block;
-        margin-top: 10px;
-        color: #858594;
-        background: #191923;
-        padding: 6px 9px;
-        border-radius: 6px;
-        font-size: 12px;
-    }
-
-    .status {
-        display: inline-block;
-        margin-top: 10px;
-        color: #7ee787;
-        background: #122018;
-        padding: 6px 9px;
-        border-radius: 6px;
-        font-size: 12px;
-    }
-
-    footer {
-        text-align: center;
-        padding: 30px;
-        color: #777784;
-        border-top: 1px solid #1d1d27;
-    }
-
-    @media (max-width: 700px) {
-
-        nav {
-            padding: 18px 5%;
+    <title>Kite Dashboard</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
         }
 
-        .profile-name {
-            display: none;
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #0f1117;
+            color: #ffffff;
         }
 
-        .hero {
-            min-height: 70vh;
+        .navbar {
+            height: 70px;
+            background: #171a23;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            border-bottom: 1px solid #292d38;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .profile img {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+        }
+
+        .logout-button {
+            background: #242936;
+            border: none;
+            color: white;
+            padding: 9px 14px;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        .logout-button:hover {
+            background: #303544;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 40px 25px;
+        }
+
+        .hero h1 {
+            margin-bottom: 10px;
+            font-size: 34px;
         }
 
         .hero p {
-            font-size: 16px;
+            color: #9da3b4;
         }
 
-        .section,
-        #dashboard,
-        #server-settings {
-            padding: 55px 5%;
+        .section-title {
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+
+        .server-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .server-card {
+            background: #171a23;
+            border: 1px solid #292d38;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .server-top {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .server-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 12px;
+            object-fit: cover;
+            background: #242936;
+        }
+
+        .server-name {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .server-id {
+            color: #777f91;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .manage-button {
+            margin-top: 18px;
+            width: 100%;
+            padding: 11px;
+            border: none;
+            border-radius: 7px;
+            background: #5865f2;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .manage-button:hover {
+            background: #4752c4;
+        }
+
+        .manage-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .server-settings {
+            display: none;
+        }
+
+        .server-header {
+            background: #171a23;
+            border: 1px solid #292d38;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .server-header h1 {
+            margin: 0 0 8px 0;
+        }
+
+        .server-header p {
+            margin: 4px 0;
+            color: #9da3b4;
         }
 
         .settings-layout {
-            grid-template-columns: 1fr;
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            gap: 20px;
         }
 
-        .settings-menu {
-            display: flex;
-            overflow-x: auto;
-            gap: 5px;
+        .settings-sidebar {
+            background: #171a23;
+            border: 1px solid #292d38;
+            border-radius: 12px;
+            padding: 12px;
+            height: fit-content;
         }
 
-        .menu-item {
-            white-space: nowrap;
+        .settings-button {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: #aeb4c3;
+            text-align: left;
+            padding: 12px;
+            border-radius: 7px;
+            cursor: pointer;
+            margin-bottom: 4px;
+        }
+
+        .settings-button:hover {
+            background: #242936;
+            color: white;
+        }
+
+        .settings-button.active {
+            background: #5865f2;
+            color: white;
+        }
+
+        .settings-content {
+            background: #171a23;
+            border: 1px solid #292d38;
+            border-radius: 12px;
+            padding: 25px;
+            min-height: 350px;
+        }
+
+        .settings-content h2 {
+            margin-top: 0;
+        }
+
+        .settings-content p {
+            color: #9da3b4;
+        }
+
+        .setting-box {
+            margin-top: 25px;
+            padding: 20px;
+            background: #10131a;
+            border: 1px solid #292d38;
+            border-radius: 10px;
+        }
+
+        .setting-box h3 {
+            margin-top: 0;
+        }
+
+        .setting-box .manage-button {
             width: auto;
+            min-width: 110px;
+            margin-right: 12px;
         }
 
-        .server-title h1 {
-            font-size: 25px;
+        .coming-soon {
+            color: #9da3b4;
+            font-size: 14px;
         }
-    }
-</style>
 
+        .status {
+            color: #57d68d;
+            font-size: 14px;
+        }
+
+        .back-button {
+            background: #242936;
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 7px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .back-button:hover {
+            background: #303544;
+        }
+
+        .loading {
+            color: #9da3b4;
+        }
+
+        .error {
+            color: #ff6b6b;
+        }
+
+        @media (max-width: 700px) {
+            .settings-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .navbar {
+                padding: 0 15px;
+            }
+
+            .container {
+                padding: 25px 15px;
+            }
+
+            .profile span {
+                display: none;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<!-- NAVIGATION -->
+    <div class="navbar">
 
-<nav>
+        <div class="logo">
+            Kite
+        </div>
 
-    <div class="logo">
-        Kite
-    </div>
+        <div class="nav-right">
 
-    <div class="nav-right">
-
-        <a
-            class="nav-button"
-            href="https://discord.com/oauth2/authorize?client_id=1542822026530652160"
-            target="_blank"
-        >
-            Add to Discord
-        </a>
-
-        <div id="account-area">
-
-            <a
-                class="nav-button"
-                href="https://kite-dashboard.lazare12-22.workers.dev/login"
+            <div
+                class="profile"
+                id="profile"
+                style="display:none;"
             >
-                Login with Discord
-            </a>
+                <img
+                    id="profile-avatar"
+                    src=""
+                    alt="Avatar"
+                >
+
+                <span id="profile-name"></span>
+            </div>
+
+            <button
+                class="logout-button"
+                id="logout-button"
+                style="display:none;"
+                onclick="logoutKite()"
+            >
+                Logout
+            </button>
 
         </div>
 
     </div>
 
-</nav>
 
+    <main class="container">
 
-<!-- HERO -->
-
-<section class="hero" id="home">
-
-    <h1>
-        Meet <span>Kite</span>
-    </h1>
-
-    <p>
-        A powerful all-in-one Discord bot built to make server management easier.
-        Featuring advanced moderation tools, useful utilities, automation,
-        and AI commands, Kite provides everything you need to keep
-        your server safe, organized, and fun.
-    </p>
-
-    <div class="buttons">
-
-        <a
-            class="button invite"
-            href="https://discord.com/oauth2/authorize?client_id=1542822026530652160"
-            target="_blank"
+        <div
+            id="login-message"
+            class="hero"
         >
-            Add Kite to Discord
-        </a>
+            <h1>Kite Dashboard</h1>
 
-        <a
-            class="button commands"
-            href="#features"
+            <p>
+                Checking your Discord account...
+            </p>
+        </div>
+
+
+        <div
+            id="dashboard"
+            style="display:none;"
         >
-            Explore Features
-        </a>
 
-    </div>
+            <div class="hero">
+                <h1>Kite Dashboard</h1>
 
-</section>
+                <p>
+                    Manage your Discord servers and Kite settings.
+                </p>
+            </div>
 
-
-<!-- SERVER LIST -->
-
-<section id="dashboard">
-
-    <div class="dashboard-container">
-
-        <div class="dashboard-header">
-
-            <h2>
+            <h2 class="section-title">
                 Your Servers
             </h2>
 
-            <p>
-                Select a server to manage your Kite settings.
-            </p>
-
-        </div>
-
-        <div id="servers-container">
-
-            <div class="loading">
-                Loading your servers...
+            <div
+                id="server-list"
+                class="server-grid"
+            >
+                <p class="loading">
+                    Loading servers...
+                </p>
             </div>
 
         </div>
 
-    </div>
 
-</section>
-
-
-<!-- SERVER SETTINGS -->
-
-<section id="server-settings">
-
-    <div class="settings-container">
-
-        <a
-            href="#dashboard"
-            class="back-button"
-            onclick="closeServerSettings()"
+        <div
+            id="server-settings"
+            class="server-settings"
         >
-            ← Back to Servers
-        </a>
 
-        <div class="server-title">
-
-            <img
-                id="selected-server-icon"
-                class="large-server-icon"
-                src=""
-                alt=""
+            <button
+                class="back-button"
+                onclick="closeServerSettings()"
             >
+                ← Back to Servers
+            </button>
 
-            <div>
+            <div class="server-header">
 
                 <h1 id="selected-server-name">
                     Server
                 </h1>
 
                 <p>
-                    Manage your Kite configuration
+                    Server ID:
+                    <span id="selected-server-id">—</span>
                 </p>
 
             </div>
 
-        </div>
 
+            <div class="settings-layout">
 
-        <div class="settings-layout">
+                <div class="settings-sidebar">
 
-            <!-- MENU -->
+                    <button
+                        class="settings-button active"
+                        onclick="showSettings('overview', this)"
+                    >
+                        Overview
+                    </button>
 
-            <div class="settings-menu">
+                    <button
+                        class="settings-button"
+                        onclick="showSettings('moderation', this)"
+                    >
+                        Moderation
+                    </button>
 
-                <button
-                    class="menu-item active"
-                    onclick="showSettings('overview', this)"
-                >
-                    Overview
-                </button>
-
-                <button
-                    class="menu-item"
-                    onclick="showSettings('moderation', this)"
-                >
-                    Moderation
-                </button>
-
-                <button
-                    class="menu-item"
-                    onclick="showSettings('commands', this)"
-                >
-                    Commands
-                </button>
-
-                <button
-                    class="menu-item"
-                    onclick="showSettings('ai', this)"
-                >
-                    AI
-                </button>
-
-                <button
-                    class="menu-item"
-                    onclick="showSettings('welcome', this)"
-                >
-                    Welcome
-                </button>
-
-                <button
-                    class="menu-item"
-                    onclick="showSettings('automation', this)"
-                >
-                    Automation
-                </button>
-
-            </div>
-
-
-            <!-- CONTENT -->
-
-            <div class="settings-content">
-
-                <!-- OVERVIEW -->
-
-                <div
-                    class="settings-page"
-                    id="settings-overview"
-                >
-
-                    <h2>
-                        Server Overview
-                    </h2>
-
-                    <p>
-                        Manage your Kite bot configuration for this server.
-                    </p>
-
-                    <div class="setting-box">
-
-                        <h3>
-                            Kite Status
-                        </h3>
-
-                        <p>
-                            Kite is ready to be configured for this server.
-                        </p>
-
-                        <span class="status">
-                            Dashboard Connected
-                        </span>
-
-                    </div>
-
-                    <div class="setting-box">
-
-                        <h3>
-                            Server ID
-                        </h3>
-
-                        <p id="selected-server-id">
-                            —
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <!-- MODERATION -->
-
-<div
-    class="settings-page"
-    id="settings-moderation"
-    style="display:none;"
->
-
-
-<h2>
-    Moderation
-</h2>
-
-<p>
-    Configure Kite's moderation features for this server.
-</p>
-
-<div class="setting-box">
-
-    <h3>
-        Auto Moderation
-    </h3>
-
-    <p>
-        Enable or disable automatic moderation for this server.
-    </p>
-
-    <button
-        id="moderation-toggle"
-        class="manage-button"
-        onclick="toggleModeration()"
-    >
-        Enable
-    </button>
-
-    <span
-        id="moderation-status"
-        class="coming-soon"
-    >
-        Disabled
-    </span>
-
-</div>
-
-
-</div>
-
-
-
-                <!-- COMMANDS -->
-
-                <div
-                    class="settings-page"
-                    id="settings-commands"
-                    style="display:none;"
-                >
-
-                    <h2>
+                    <button
+                        class="settings-button"
+                        onclick="showSettings('commands', this)"
+                    >
                         Commands
-                    </h2>
+                    </button>
 
-                    <p>
-                        Control which Kite commands are available in your server.
-                    </p>
-
-                    <div class="setting-box">
-
-                        <h3>
-                            Command Configuration
-                        </h3>
-
-                        <p>
-                            Enable or disable individual commands and
-                            configure command permissions.
-                        </p>
-
-                        <span class="coming-soon">
-                            Coming next
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <!-- AI -->
-
-                <div
-                    class="settings-page"
-                    id="settings-ai"
-                    style="display:none;"
-                >
-
-                    <h2>
+                    <button
+                        class="settings-button"
+                        onclick="showSettings('ai', this)"
+                    >
                         AI
-                    </h2>
+                    </button>
 
-                    <p>
-                        Configure Kite's AI features.
-                    </p>
-
-                    <div class="setting-box">
-
-                        <h3>
-                            AI Assistant
-                        </h3>
-
-                        <p>
-                            Configure the AI command and its server permissions.
-                        </p>
-
-                        <span class="coming-soon">
-                            Coming next
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <!-- WELCOME -->
-
-                <div
-                    class="settings-page"
-                    id="settings-welcome"
-                    style="display:none;"
-                >
-
-                    <h2>
+                    <button
+                        class="settings-button"
+                        onclick="showSettings('welcome', this)"
+                    >
                         Welcome
-                    </h2>
+                    </button>
 
-                    <p>
-                        Configure welcome messages for new members.
-                    </p>
-
-                    <div class="setting-box">
-
-                        <h3>
-                            Welcome System
-                        </h3>
-
-                        <p>
-                            Choose a channel and customize the message
-                            Kite sends when someone joins.
-                        </p>
-
-                        <span class="coming-soon">
-                            Coming next
-                        </span>
-
-                    </div>
+                    <button
+                        class="settings-button"
+                        onclick="showSettings('automation', this)"
+                    >
+                        Automation
+                    </button>
 
                 </div>
 
 
-                <!-- AUTOMATION -->
+                <div class="settings-content">
 
-                <div
-                    class="settings-page"
-                    id="settings-automation"
-                    style="display:none;"
-                >
+                    <div
+                        class="settings-page"
+                        id="settings-overview"
+                    >
 
-                    <h2>
-                        Automation
-                    </h2>
-
-                    <p>
-                        Create automated actions for your server.
-                    </p>
-
-                    <div class="setting-box">
-
-                        <h3>
-                            Automated Actions
-                        </h3>
+                        <h2>
+                            Server Overview
+                        </h2>
 
                         <p>
-                            Configure automatic tasks and server events.
+                            Configure Kite for this Discord server.
                         </p>
 
-                        <span class="coming-soon">
-                            Coming next
-                        </span>
+                        <div class="setting-box">
+
+                            <h3>
+                                Dashboard Connected
+                            </h3>
+
+                            <p>
+                                Kite is connected to this server's dashboard.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="settings-page"
+                        id="settings-moderation"
+                        style="display:none;"
+                    >
+
+                        <h2>
+                            Moderation
+                        </h2>
+
+                        <p>
+                            Configure Kite's moderation features for this server.
+                        </p>
+
+                        <div class="setting-box">
+
+                            <h3>
+                                Auto Moderation
+                            </h3>
+
+                            <p>
+                                Enable or disable automatic moderation for this server.
+                            </p>
+
+                            <button
+                                id="moderation-toggle"
+                                class="manage-button"
+                                onclick="toggleModeration()"
+                            >
+                                Enable
+                            </button>
+
+                            <span
+                                id="moderation-status"
+                                class="coming-soon"
+                            >
+                                Disabled
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="settings-page"
+                        id="settings-commands"
+                        style="display:none;"
+                    >
+
+                        <h2>
+                            Commands
+                        </h2>
+
+                        <p>
+                            Configure Kite's commands for this server.
+                        </p>
+
+                        <div class="setting-box">
+                            <h3>Coming Next</h3>
+                            <p>
+                                Command settings will be available here.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="settings-page"
+                        id="settings-ai"
+                        style="display:none;"
+                    >
+
+                        <h2>
+                            AI
+                        </h2>
+
+                        <p>
+                            Configure Kite's AI features for this server.
+                        </p>
+
+                        <div class="setting-box">
+                            <h3>Coming Next</h3>
+                            <p>
+                                AI settings will be available here.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="settings-page"
+                        id="settings-welcome"
+                        style="display:none;"
+                    >
+
+                        <h2>
+                            Welcome
+                        </h2>
+
+                        <p>
+                            Configure welcome messages for this server.
+                        </p>
+
+                        <div class="setting-box">
+                            <h3>Coming Next</h3>
+                            <p>
+                                Welcome settings will be available here.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="settings-page"
+                        id="settings-automation"
+                        style="display:none;"
+                    >
+
+                        <h2>
+                            Automation
+                        </h2>
+
+                        <p>
+                            Configure automated actions for this server.
+                        </p>
+
+                        <div class="setting-box">
+                            <h3>Coming Next</h3>
+                            <p>
+                                Automation settings will be available here.
+                            </p>
+                        </div>
 
                     </div>
 
@@ -951,649 +617,623 @@
 
         </div>
 
-    </div>
-
-</section>
+    </main>
 
 
-<!-- FEATURES -->
+    <script>
 
-<section class="section" id="features">
+        const WORKER_URL =
+            "https://kite-dashboard.lazare12-22.workers.dev";
 
-    <h2>
-        Everything You Need
-    </h2>
-
-    <div class="features">
-
-        <div class="feature">
-
-            <h3>
-                Moderation
-            </h3>
-
-            <p>
-                Powerful tools to help keep your Discord server
-                safe and organized.
-            </p>
-
-        </div>
-
-        <div class="feature">
-
-            <h3>
-                Utilities
-            </h3>
-
-            <p>
-                Useful commands designed to make managing and
-                using your server easier.
-            </p>
-
-        </div>
-
-        <div class="feature">
-
-            <h3>
-                Automation
-            </h3>
-
-            <p>
-                Automate repetitive server tasks and keep
-                everything running smoothly.
-            </p>
-
-        </div>
-
-        <div class="feature">
-
-            <h3>
-                Fun & Games
-            </h3>
-
-            <p>
-                Fun commands to give your members
-                something entertaining to do.
-            </p>
-
-        </div>
-
-    </div>
-
-</section>
+        let currentGuilds = [];
 
 
-<footer>
+        async function checkLogin() {
 
-    © 2026 Kite. All rights reserved.
+            try {
 
-</footer>
-
-
-<!-- JAVASCRIPT -->
-
-<script>
-
-    const WORKER_URL =
-        "https://kite-dashboard.lazare12-22.workers.dev";
-
-    let currentGuilds = [];
-
-
-    // =========================
-    // CHECK LOGIN
-    // =========================
-
-    async function checkLogin() {
-
-        try {
-
-            const response =
-                await fetch(
+                const response = await fetch(
                     WORKER_URL + "/me",
                     {
                         credentials: "include"
                     }
                 );
 
-            const user =
-                await response.json();
+                const data = await response.json();
+
+                if (!data.loggedIn) {
+
+                    document.getElementById(
+                        "login-message"
+                    ).innerHTML = `
+                        <h1>Welcome to Kite</h1>
+                        <p>Login with Discord to manage your servers.</p>
+                        <a
+                            href="${WORKER_URL}/login"
+                            class="manage-button"
+                            style="display:inline-block;width:auto;text-decoration:none;"
+                        >
+                            Login with Discord
+                        </a>
+                    `;
+
+                    return;
+                }
 
 
-            if (!user.loggedIn) {
-                return;
-            }
-
-
-            const accountArea =
                 document.getElementById(
-                    "account-area"
+                    "login-message"
+                ).style.display = "none";
+
+
+                document.getElementById(
+                    "dashboard"
+                ).style.display = "block";
+
+
+                document.getElementById(
+                    "profile"
+                ).style.display = "flex";
+
+
+                document.getElementById(
+                    "logout-button"
+                ).style.display = "block";
+
+
+                document.getElementById(
+                    "profile-name"
+                ).textContent =
+                    data.user?.username || "Discord User";
+
+
+                if (data.user?.avatar) {
+
+                    document.getElementById(
+                        "profile-avatar"
+                    ).src =
+                        "https://cdn.discordapp.com/avatars/" +
+                        data.user.id +
+                        "/" +
+                        data.user.avatar +
+                        ".png?size=128";
+
+                }
+
+
+                loadGuilds();
+
+            } catch (error) {
+
+                console.error(
+                    "Login check failed:",
+                    error
                 );
 
-
-            let avatarURL;
-
-
-            if (user.avatar) {
-
-                avatarURL =
-                    `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`;
-
-            } else {
-
-                avatarURL =
-                    `https://cdn.discordapp.com/embed/avatars/${Number(user.id) % 5}.png`;
+                document.getElementById(
+                    "login-message"
+                ).innerHTML = `
+                    <h1>Kite Dashboard</h1>
+                    <p class="error">
+                        Could not connect to the dashboard.
+                    </p>
+                `;
 
             }
-
-
-            accountArea.innerHTML = `
-
-                <div class="profile-area">
-
-                    <a
-                        class="profile-link"
-                        href="#dashboard"
-                        title="${escapeHTML(user.username)}"
-                    >
-
-                        <img
-                            class="profile-avatar"
-                            src="${avatarURL}"
-                            alt="${escapeHTML(user.username)}"
-                        >
-
-                        <span class="profile-name">
-                            ${escapeHTML(user.username)}
-                        </span>
-
-                    </a>
-
-                    <button
-                        class="logout-button"
-                        onclick="logoutKite()"
-                    >
-                        Logout
-                    </button>
-
-                </div>
-
-            `;
-
-
-            await loadGuilds();
-
-        } catch (error) {
-
-            console.error(
-                "Kite login check failed:",
-                error
-            );
 
         }
 
-    }
 
+        async function loadGuilds() {
 
-    // =========================
-    // LOAD SERVERS
-    // =========================
+            try {
 
-    async function loadGuilds() {
-
-        const dashboard =
-            document.getElementById(
-                "dashboard"
-            );
-
-        const container =
-            document.getElementById(
-                "servers-container"
-            );
-
-
-        try {
-
-            const response =
-                await fetch(
+                const response = await fetch(
                     WORKER_URL + "/guilds",
                     {
                         credentials: "include"
                     }
                 );
 
+                const data = await response.json();
 
-            const data =
-                await response.json();
+                if (!data.loggedIn) {
+                    return;
+                }
 
 
-            if (!data.loggedIn) {
+                const guilds =
+                    Array.isArray(data.guilds)
+                        ? data.guilds
+                        : [];
+
+
+                currentGuilds = guilds;
+
+
+                const serverList =
+                    document.getElementById(
+                        "server-list"
+                    );
+
+
+                if (!guilds.length) {
+
+                    serverList.innerHTML = `
+                        <p class="loading">
+                            No manageable servers found.
+                        </p>
+                    `;
+
+                    return;
+                }
+
+
+                serverList.innerHTML = guilds.map(
+                    guild => {
+
+                        const icon = guild.icon
+                            ? "https://cdn.discordapp.com/icons/" +
+                              guild.id +
+                              "/" +
+                              guild.icon +
+                              ".png?size=128"
+                            : "https://cdn.discordapp.com/embed/avatars/0.png";
+
+
+                        return `
+                            <div class="server-card">
+
+                                <div class="server-top">
+
+                                    <img
+                                        class="server-icon"
+                                        src="${icon}"
+                                        alt=""
+                                    >
+
+                                    <div>
+
+                                        <div class="server-name">
+                                            ${escapeHTML(guild.name)}
+                                        </div>
+
+                                        <div class="server-id">
+                                            ${guild.id}
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <button
+                                    class="manage-button"
+                                    onclick="openServer('${guild.id}')"
+                                >
+                                    Manage
+                                </button>
+
+                            </div>
+                        `;
+
+                    }
+                ).join("");
+
+
+            } catch (error) {
+
+                console.error(
+                    "Could not load servers:",
+                    error
+                );
+
+                document.getElementById(
+                    "server-list"
+                ).innerHTML = `
+                    <p class="error">
+                        Could not load your servers.
+                    </p>
+                `;
+
+            }
+
+        }
+
+
+        function openServer(serverID) {
+
+            const guild =
+                currentGuilds.find(
+                    server => server.id === serverID
+                );
+
+
+            if (!guild) {
                 return;
             }
 
 
-            const guilds =
-                Array.isArray(data.guilds)
-                    ? data.guilds
-                    : [];
+            document.getElementById(
+                "dashboard"
+            ).style.display = "none";
 
 
-            currentGuilds =
-                guilds.filter(guild => {
-
-                    try {
-
-                        const permissions =
-                            BigInt(
-                                guild.permissions || "0"
-                            );
-
-                        const administrator =
-                            (permissions & 8n) === 8n;
-
-                        const manageServer =
-                            (permissions & 32n) === 32n;
-
-                        return (
-                            guild.owner ||
-                            administrator ||
-                            manageServer
-                        );
-
-                    } catch {
-
-                        return guild.owner === true;
-
-                    }
-
-                });
+            document.getElementById(
+                "server-settings"
+            ).style.display = "block";
 
 
-            dashboard.style.display =
-                "block";
+            document.getElementById(
+                "selected-server-name"
+            ).textContent =
+                guild.name;
+
+
+            document.getElementById(
+                "selected-server-id"
+            ).textContent =
+                guild.id;
+
+
+            loadModerationSettings();
+
+
+            const icon =
+                guild.icon
+                    ? "https://cdn.discordapp.com/icons/" +
+                      guild.id +
+                      "/" +
+                      guild.icon +
+                      ".png?size=128"
+                    : "https://cdn.discordapp.com/embed/avatars/0.png";
+
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+
+        }
+
+
+        function closeServerSettings() {
+
+            document.getElementById(
+                "server-settings"
+            ).style.display = "none";
+
+
+            document.getElementById(
+                "dashboard"
+            ).style.display = "block";
+
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+
+        }
+
+
+        function showSettings(
+            section,
+            button
+        ) {
+
+            document.querySelectorAll(
+                ".settings-page"
+            ).forEach(
+                page => {
+                    page.style.display = "none";
+                }
+            );
+
+
+            const selected =
+                document.getElementById(
+                    "settings-" + section
+                );
+
+
+            if (selected) {
+                selected.style.display = "block";
+            }
+
+
+            document.querySelectorAll(
+                ".settings-button"
+            ).forEach(
+                item => {
+                    item.classList.remove(
+                        "active"
+                    );
+                }
+            );
+
+
+            if (button) {
+                button.classList.add(
+                    "active"
+                );
+            }
+
+
+            if (section === "moderation") {
+                loadModerationSettings();
+            }
+
+        }
+
+
+        async function loadModerationSettings() {
+
+            const serverID =
+                document.getElementById(
+                    "selected-server-id"
+                ).textContent;
 
 
             if (
-                currentGuilds.length === 0
+                !serverID ||
+                serverID === "—"
             ) {
-
-                container.innerHTML = `
-
-                    <div class="no-servers">
-
-                        <h3>
-                            No manageable servers
-                        </h3>
-
-                        <p style="margin-top:10px;">
-                            You don't currently have permission
-                            to manage any Discord servers.
-                        </p>
-
-                    </div>
-
-                `;
-
                 return;
+            }
+
+
+            try {
+
+                const response = await fetch(
+                    WORKER_URL +
+                    "/servers/" +
+                    serverID +
+                    "/settings",
+                    {
+                        credentials: "include"
+                    }
+                );
+
+
+                const data =
+                    await response.json();
+
+
+                const enabled =
+                    data.settings?.moderation_enabled === true;
+
+
+                updateModerationButton(
+                    enabled
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Could not load moderation settings:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        function updateModerationButton(
+            enabled
+        ) {
+
+            const button =
+                document.getElementById(
+                    "moderation-toggle"
+                );
+
+
+            const status =
+                document.getElementById(
+                    "moderation-status"
+                );
+
+
+            if (
+                !button ||
+                !status
+            ) {
+                return;
+            }
+
+
+            if (enabled) {
+
+                button.textContent =
+                    "Disable";
+
+
+                status.textContent =
+                    "Enabled";
+
+
+                status.className =
+                    "status";
+
+            } else {
+
+                button.textContent =
+                    "Enable";
+
+
+                status.textContent =
+                    "Disabled";
+
+
+                status.className =
+                    "coming-soon";
+
+            }
+
+        }
+
+
+        async function toggleModeration() {
+
+            const serverID =
+                document.getElementById(
+                    "selected-server-id"
+                ).textContent;
+
+
+            if (
+                !serverID ||
+                serverID === "—"
+            ) {
+                return;
+            }
+
+
+            const button =
+                document.getElementById(
+                    "moderation-toggle"
+                );
+
+
+            button.disabled = true;
+
+            button.textContent =
+                "Saving...";
+
+
+            try {
+
+                const currentResponse =
+                    await fetch(
+                        WORKER_URL +
+                        "/servers/" +
+                        serverID +
+                        "/settings",
+                        {
+                            credentials: "include"
+                        }
+                    );
+
+
+                const currentData =
+                    await currentResponse.json();
+
+
+                const currentEnabled =
+                    currentData.settings?.moderation_enabled === true;
+
+
+                const response =
+                    await fetch(
+                        WORKER_URL +
+                        "/servers/" +
+                        serverID +
+                        "/settings",
+                        {
+                            method: "POST",
+
+                            credentials: "include",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify({
+                                moderation_enabled:
+                                    !currentEnabled
+                            })
+
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (data.success) {
+
+                    updateModerationButton(
+                        data.settings.moderation_enabled
+                    );
+
+                } else {
+
+                    updateModerationButton(
+                        currentEnabled
+                    );
+
+                    alert(
+                        "Could not save moderation settings."
+                    );
+
+                }
+
+
+            } catch (error) {
+
+                console.error(
+                    "Could not update moderation:",
+                    error
+                );
+
+
+                alert(
+                    "Could not save moderation settings."
+                );
 
             }
 
 
-            const grid =
-                document.createElement(
-                    "div"
+            button.disabled = false;
+
+        }
+
+
+        async function logoutKite() {
+
+            try {
+
+                await fetch(
+                    WORKER_URL + "/logout",
+                    {
+                        credentials: "include"
+                    }
                 );
 
-            grid.className =
-                "servers-grid";
+            } catch (error) {
+
+                console.error(
+                    "Logout failed:",
+                    error
+                );
+
+            }
 
 
-            currentGuilds.forEach(
-                guild => {
-
-                    const card =
-                        document.createElement(
-                            "div"
-                        );
-
-                    card.className =
-                        "server-card";
-
-
-                    let iconHTML;
-
-
-                    if (guild.icon) {
-
-                        const iconURL =
-                            `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png?size=128`;
-
-                        iconHTML = `
-
-                            <img
-                                class="server-icon"
-                                src="${iconURL}"
-                                alt=""
-                            >
-
-                        `;
-
-                    } else {
-
-                        iconHTML = `
-
-                            <div
-                                class="server-icon-placeholder"
-                            >
-                                ${escapeHTML(
-                                    guild.name
-                                        .charAt(0)
-                                        .toUpperCase()
-                                )}
-                            </div>
-
-                        `;
-
-                    }
-
-
-                    card.innerHTML = `
-
-                        ${iconHTML}
-
-                        <div class="server-info">
-
-                            <h3>
-                                ${escapeHTML(
-                                    guild.name
-                                )}
-                            </h3>
-
-                            <p>
-                                ${
-                                    guild.owner
-                                        ? "Server Owner"
-                                        : "Server Manager"
-                                }
-                            </p>
-
-                            <button
-                                class="manage-button"
-                                onclick="openServer('${guild.id}')"
-                            >
-                                Manage
-                            </button>
-
-                        </div>
-
-                    `;
-
-
-                    grid.appendChild(card);
-
-                }
-            );
-
-
-            container.innerHTML = "";
-
-            container.appendChild(grid);
-
-
-        } catch (error) {
-
-            console.error(
-                "Could not load Discord servers:",
-                error
-            );
-
-
-            container.innerHTML = `
-
-                <div class="no-servers">
-
-                    <h3>
-                        Couldn't load servers
-                    </h3>
-
-                    <p style="margin-top:10px;">
-                        Please refresh the page and try again.
-                    </p>
-
-                </div>
-
-            `;
+            window.location.reload();
 
         }
 
-    }
 
+        function escapeHTML(value) {
 
-    // =========================
-    // OPEN SERVER
-    // =========================
-
-    function openServer(serverID) {
-
-        const guild =
-            currentGuilds.find(
-                g => g.id === serverID
-            );
-
-
-        if (!guild) {
-            return;
-        }
-
-
-        document.getElementById(
-            "dashboard"
-        ).style.display = "none";
-
-
-        document.getElementById(
-            "home"
-        ).style.display = "none";
-
-
-        document.getElementById(
-            "features"
-        ).style.display = "none";
-
-
-        document.getElementById(
-            "server-settings"
-        ).style.display = "block";
-
-
-        document.getElementById(
-            "selected-server-name"
-        ).textContent =
-            guild.name;
-
-
-        document.getElementById(
-            "selected-server-id"
-        ).textContent =
-            guild.id;
-
-
-        const icon =
-            document.getElementById(
-                "selected-server-icon"
-            );
-
-
-        if (guild.icon) {
-
-            icon.src =
-                `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png?size=256`;
-
-            icon.style.display =
-                "block";
-
-        } else {
-
-            icon.style.display =
-                "none";
+            return String(value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
 
         }
 
 
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
+        checkLogin();
 
-    }
-
-
-    // =========================
-    // CLOSE SERVER SETTINGS
-    // =========================
-
-    function closeServerSettings() {
-
-        document.getElementById(
-            "server-settings"
-        ).style.display = "none";
-
-
-        document.getElementById(
-            "home"
-        ).style.display = "";
-
-
-        document.getElementById(
-            "features"
-        ).style.display = "";
-
-
-        document.getElementById(
-            "dashboard"
-        ).style.display = "block";
-
-
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
-
-    }
-
-
-    // =========================
-    // SETTINGS MENU
-    // =========================
-
-    function showSettings(
-        section,
-        button
-    ) {
-
-        const pages =
-            document.querySelectorAll(
-                ".settings-page"
-            );
-
-
-        pages.forEach(page => {
-
-            page.style.display =
-                "none";
-
-        });
-
-
-        const selected =
-            document.getElementById(
-                "settings-" + section
-            );
-
-
-        if (selected) {
-
-            selected.style.display =
-                "block";
-
-        }
-
-
-        const buttons =
-            document.querySelectorAll(
-                ".menu-item"
-            );
-
-
-        buttons.forEach(item => {
-
-            item.classList.remove(
-                "active"
-            );
-
-        });
-
-
-        button.classList.add(
-            "active"
-        );
-
-    }
-
-
-    // =========================
-    // LOGOUT
-    // =========================
-
-    async function logoutKite() {
-
-        try {
-
-            await fetch(
-                WORKER_URL + "/logout",
-                {
-                    credentials: "include"
-                }
-            );
-
-        } catch (error) {
-
-            console.error(
-                "Logout error:",
-                error
-            );
-
-        }
-
-
-        window.location.reload();
-
-    }
-
-
-    // =========================
-    // HTML ESCAPING
-    // =========================
-
-    function escapeHTML(value) {
-
-        return String(value)
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-
-    }
-
-
-    // =========================
-    // START
-    // =========================
-
-    checkLogin();
-
-</script>
+    </script>
 
 </body>
 </html>
