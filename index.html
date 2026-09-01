@@ -184,10 +184,12 @@
            target="_blank">
             Add to Discord
         </a>
-        <a class="nav-button"
-   href="https://kite-dashboard.lazare12-22.workers.dev/login">
-    Login with Discord
-</a>
+      <div id="account-area">
+    <a class="nav-button"
+       href="https://kite-dashboard.lazare12-22.workers.dev/login">
+        Login with Discord
+    </a>
+</div>
     </nav>
 
 
@@ -265,6 +267,55 @@
     <footer>
         © 2026 Kite. All rights reserved.
     </footer>
+    
+    <script>
+async function checkLogin() {
+    try {
+        const response = await fetch(
+            "https://kite-dashboard.lazare12-22.workers.dev/me",
+            {
+                credentials: "include"
+            }
+        );
+
+        const user = await response.json();
+
+        if (!user.loggedIn) return;
+
+        const accountArea = document.getElementById("account-area");
+
+        let avatarURL;
+
+        if (user.avatar) {
+            avatarURL =
+                `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`;
+        } else {
+            avatarURL =
+                `https://cdn.discordapp.com/embed/avatars/${Number(user.id) % 5}.png`;
+        }
+
+        accountArea.innerHTML = `
+            <a href="#" title="${user.username}">
+                <img
+                    src="${avatarURL}"
+                    alt="${user.username}"
+                    style="
+                        width:42px;
+                        height:42px;
+                        border-radius:50%;
+                        object-fit:cover;
+                        vertical-align:middle;
+                    "
+                >
+            </a>
+        `;
+    } catch (error) {
+        console.error("Login check failed:", error);
+    }
+}
+
+checkLogin();
+</script>
 
 </body>
 </html>
