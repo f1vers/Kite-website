@@ -759,38 +759,51 @@
 
                 <!-- MODERATION -->
 
-                <div
-                    class="settings-page"
-                    id="settings-moderation"
-                    style="display:none;"
-                >
+<div
+    class="settings-page"
+    id="settings-moderation"
+    style="display:none;"
+>
 
-                    <h2>
-                        Moderation
-                    </h2>
 
-                    <p>
-                        Configure Kite's moderation features.
-                    </p>
+<h2>
+    Moderation
+</h2>
 
-                    <div class="setting-box">
+<p>
+    Configure Kite's moderation features for this server.
+</p>
 
-                        <h3>
-                            Auto Moderation
-                        </h3>
+<div class="setting-box">
 
-                        <p>
-                            Configure automatic moderation,
-                            warnings and other protection tools.
-                        </p>
+    <h3>
+        Auto Moderation
+    </h3>
 
-                        <span class="coming-soon">
-                            Coming next
-                        </span>
+    <p>
+        Enable or disable automatic moderation for this server.
+    </p>
 
-                    </div>
+    <button
+        id="moderation-toggle"
+        class="manage-button"
+        onclick="toggleModeration()"
+    >
+        Enable
+    </button>
 
-                </div>
+    <span
+        id="moderation-status"
+        class="coming-soon"
+    >
+        Disabled
+    </span>
+
+</div>
+
+
+</div>
+
 
 
                 <!-- COMMANDS -->
