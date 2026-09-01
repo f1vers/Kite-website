@@ -1,1 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <title>Kite — Discord Bot</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #0b0b12;
+            color: white;
+            min-height: 100vh;
+        }
+
+        nav {
+            width: 100%;
+            padding: 22px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #0b0b12;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .nav-button {
+            text-decoration: none;
+            color: white;
+            background: #5865F2;
+            padding: 11px 18px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        .hero {
+            min-height: 75vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .hero h1 {
+            font-size: clamp(55px, 10vw, 100px);
+            margin-bottom: 15px;
+        }
+
+        .hero h1 span {
+            color: #5865F2;
+        }
+
+        .hero p {
+            max-width: 700px;
+            color: #b9b9c7;
+            font-size: 18px;
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .button {
+            text-decoration: none;
+            padding: 14px 24px;
+            border-radius: 9px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .invite {
+            background: #5865F2;
+            color: white;
+        }
+
+        .commands {
+            background: #191923;
+            color: white;
+            border: 1px solid #30303c;
+        }
+
+        .button:hover {
+            transform: translateY(-3px);
+        }
+
+        .section {
+            padding: 70px 8%;
+            text-align: center;
+        }
+
+        .section h2 {
+            font-size: 36px;
+            margin-bottom: 40px;
+        }
+
+        .features {
+            max-width: 1000px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .feature {
+            background: #13131c;
+            border: 1px solid #252532;
+            border-radius: 14px;
+            padding: 30px 20px;
+            transition: 0.2s;
+        }
+
+        .feature:hover {
+            transform: translateY(-5px);
+            border-color: #5865F2;
+        }
+
+        .feature h3 {
+            margin-bottom: 12px;
+            font-size: 21px;
+        }
+
+        .feature p {
+            color: #a7a7b5;
+            line-height: 1.6;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #777784;
+            border-top: 1px solid #1d1d27;
+        }
+
+        @media (max-width: 600px) {
+            nav {
+                padding: 18px 5%;
+            }
+
+            .hero {
+                min-height: 70vh;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .section {
+                padding: 55px 5%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo">Kite</div>
+
+        <a class="nav-button"
+           href="https://discord.com/oauth2/authorize?client_id=1542822026530652160"
+           target="_blank">
+            Add to Discord
+        </a>
+    </nav>
+
+
+    <section class="hero">
+
+        <h1>Meet <span>Kite</span></h1>
+
+        <p>
+            A powerful all-in-one Discord bot built to make server management easier.
+            Featuring advanced moderation tools, useful utilities, automation,
+            and gambling commands, Kite provides everything you need to keep
+            your server safe, organized, and funny.
+        </p>
+
+        <div class="buttons">
+
+            <a class="button invite"
+               href="https://discord.com/oauth2/authorize?client_id=1542822026530652160"
+               target="_blank">
+                Add Kite to Discord
+            </a>
+
+            <a class="button commands" href="#features">
+                Explore Features
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <section class="section" id="features">
+
+        <h2>Everything You Need</h2>
+
+        <div class="features">
+
+            <div class="feature">
+                <h3>Moderation</h3>
+                <p>
+                    Powerful tools to help keep your Discord server
+                    safe and organized.
+                </p>
+            </div>
+
+            <div class="feature">
+                <h3>Utilities</h3>
+                <p>
+                    Useful commands designed to make managing and
+                    using your server easier.
+                </p>
+            </div>
+
+            <div class="feature">
+                <h3>Automation</h3>
+                <p>
+                    Automate repetitive server tasks and keep
+                    everything running smoothly.
+                </p>
+            </div>
+
+            <div class="feature">
+                <h3>Fun & Games</h3>
+                <p>
+                    Gambling and fun commands to give your members
+                    something entertaining to do.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <footer>
+        © 2026 Kite. All rights reserved.
+    </footer>
+
+</body>
+</html>
