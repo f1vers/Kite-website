@@ -1,174 +1,140 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Kite — Discord Bot</title>
+    <title>Discord Bot Dashboard</title>
 
     <style>
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
             font-family: Arial, sans-serif;
         }
 
         body {
-            background: #0b0b12;
+            background: #0f1117;
             color: white;
             min-height: 100vh;
         }
 
         nav {
-            width: 100%;
-            padding: 22px 8%;
+            height: 70px;
+            background: #171923;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            background: #0b0b12;
+            justify-content: space-between;
+            padding: 0 30px;
+            border-bottom: 1px solid #252936;
         }
 
         .logo {
-            font-size: 25px;
+            font-size: 22px;
             font-weight: bold;
         }
 
-        .nav-button {
-            text-decoration: none;
-            color: white;
-            background: #5865F2;
-            padding: 11px 18px;
-            border-radius: 8px;
-            font-weight: bold;
-            transition: 0.2s;
-        }
-
-        .nav-button:hover {
-            transform: translateY(-2px);
-            opacity: 0.9;
-        }
-
-        .hero {
-            min-height: 75vh;
+        .nav-right {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
-            text-align: center;
-            padding: 40px 20px;
+            gap: 12px;
         }
 
-        .hero h1 {
-            font-size: clamp(55px, 10vw, 100px);
-            margin-bottom: 15px;
-        }
-
-        .hero h1 span {
-            color: #5865F2;
-        }
-
-        .hero p {
-            max-width: 700px;
-            color: #b9b9c7;
-            font-size: 18px;
-            line-height: 1.7;
-            margin-bottom: 30px;
-        }
-
-        .buttons {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .button {
-            text-decoration: none;
-            padding: 14px 24px;
-            border-radius: 9px;
+        button {
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            padding: 11px 18px;
+            font-size: 14px;
             font-weight: bold;
-            transition: 0.2s;
         }
 
-        .invite {
-            background: #5865F2;
+        .login-btn {
+            background: #5865f2;
             color: white;
         }
 
-        .commands {
-            background: #191923;
-            color: white;
-            border: 1px solid #30303c;
+        .login-btn:hover {
+            background: #4752c4;
         }
 
-        .button:hover {
-            transform: translateY(-3px);
+        #account-area {
+            display: flex;
+            align-items: center;
         }
 
-        .section {
-            padding: 70px 8%;
-            text-align: center;
+        #account-area a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
         }
 
-        .section h2 {
-            font-size: 36px;
-            margin-bottom: 40px;
+        #account-area img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+            transition: transform 0.2s;
         }
 
-        .features {
+        #account-area img:hover {
+            transform: scale(1.08);
+        }
+
+        main {
             max-width: 1000px;
-            margin: auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-        }
-
-        .feature {
-            background: #13131c;
-            border: 1px solid #252532;
-            border-radius: 14px;
-            padding: 30px 20px;
-            transition: 0.2s;
-        }
-
-        .feature:hover {
-            transform: translateY(-5px);
-            border-color: #5865F2;
-        }
-
-        .feature h3 {
-            margin-bottom: 12px;
-            font-size: 21px;
-        }
-
-        .feature p {
-            color: #a7a7b5;
-            line-height: 1.6;
-        }
-
-        footer {
+            margin: 0 auto;
+            padding: 80px 25px;
             text-align: center;
+        }
+
+        h1 {
+            font-size: 48px;
+            margin-bottom: 18px;
+        }
+
+        .description {
+            color: #aeb4c0;
+            font-size: 18px;
+            line-height: 1.6;
+            max-width: 650px;
+            margin: 0 auto 35px;
+        }
+
+        .dashboard {
+            display: none;
+            margin-top: 50px;
+            background: #171923;
+            border: 1px solid #252936;
+            border-radius: 15px;
             padding: 30px;
-            color: #777784;
-            border-top: 1px solid #1d1d27;
+            text-align: left;
+        }
+
+        .dashboard h2 {
+            margin-bottom: 10px;
+        }
+
+        .dashboard p {
+            color: #aeb4c0;
+        }
+
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            background: #20232e;
+            border-radius: 10px;
         }
 
         @media (max-width: 600px) {
             nav {
-                padding: 18px 5%;
+                padding: 0 15px;
             }
 
-            .hero {
-                min-height: 70vh;
-            }
-
-            .hero p {
-                font-size: 16px;
-            }
-
-            .section {
-                padding: 55px 5%;
+            h1 {
+                font-size: 36px;
             }
         }
     </style>
@@ -177,145 +143,222 @@
 <body>
 
     <nav>
-        <div class="logo">Kite</div>
 
-        <a class="nav-button"
-           href="https://discord.com/oauth2/authorize?client_id=1542822026530652160"
-           target="_blank">
-            Add to Discord
-        </a>
-      <div id="account-area">
-    <a class="nav-button"
-       href="https://kite-dashboard.lazare12-22.workers.dev/login">
-        Login with Discord
-    </a>
-</div>
+        <div class="logo">
+            My Discord Bot
+        </div>
+
+        <div class="nav-right">
+
+            <!-- Login button -->
+            <button
+                id="loginButton"
+                class="login-btn"
+                onclick="login()"
+            >
+                Login with Discord
+            </button>
+
+            <!-- Discord account avatar appears here after login -->
+            <div id="account-area"></div>
+
+        </div>
+
     </nav>
 
 
-    <section class="hero">
+    <main>
 
-        <h1>Meet <span>Kite</span></h1>
+        <h1>
+            Discord Bot Dashboard
+        </h1>
 
-        <p>
-            A powerful all-in-one Discord bot built to make server management easier.
-            Featuring advanced moderation tools, useful utilities, automation,
-            and gambling commands, Kite provides everything you need to keep
-            your server safe, organized, and funny.
+        <p class="description">
+            Manage your Discord bot, view your settings and access your dashboard.
         </p>
 
-        <div class="buttons">
 
-            <a class="button invite"
-               href="https://discord.com/oauth2/authorize?client_id=1542822026530652160"
-               target="_blank">
-                Add Kite to Discord
-            </a>
+        <!-- Dashboard shown after login -->
+        <div id="dashboard" class="dashboard">
 
-            <a class="button commands" href="#features">
-                Explore Features
-            </a>
+            <h2>
+                Welcome!
+            </h2>
 
-        </div>
+            <p id="welcomeText">
+                You are logged in with Discord.
+            </p>
 
-    </section>
+            <div class="status">
 
+                <strong>
+                    Account status:
+                </strong>
 
-    <section class="section" id="features">
+                <span id="accountStatus">
+                    Logged in
+                </span>
 
-        <h2>Everything You Need</h2>
-
-        <div class="features">
-
-            <div class="feature">
-                <h3>Moderation</h3>
-                <p>
-                    Powerful tools to help keep your Discord server
-                    safe and organized.
-                </p>
-            </div>
-
-            <div class="feature">
-                <h3>Utilities</h3>
-                <p>
-                    Useful commands designed to make managing and
-                    using your server easier.
-                </p>
-            </div>
-
-            <div class="feature">
-                <h3>Automation</h3>
-                <p>
-                    Automate repetitive server tasks and keep
-                    everything running smoothly.
-                </p>
-            </div>
-
-            <div class="feature">
-                <h3>Fun & Games</h3>
-                <p>
-                    Gambling and fun commands to give your members
-                    something entertaining to do.
-                </p>
             </div>
 
         </div>
 
-    </section>
+    </main>
 
 
-    <footer>
-        © 2026 Kite. All rights reserved.
-    </footer>
-    
     <script>
-async function checkLogin() {
-    try {
-        const response = await fetch(
-            "https://kite-dashboard.lazare12-22.workers.dev/me",
-            {
-                credentials: "include"
-            }
-        );
 
-        const user = await response.json();
+        /*
+         * Your Cloudflare Worker
+         */
+        const API_URL =
+            "https://kite-dashboard.lazare12-22.workers.dev";
 
-        if (!user.loggedIn) return;
 
-        const accountArea = document.getElementById("account-area");
+        /*
+         * Discord Login
+         */
+        function login() {
 
-        let avatarURL;
+            window.location.href =
+                API_URL + "/auth/discord";
 
-        if (user.avatar) {
-            avatarURL =
-                `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`;
-        } else {
-            avatarURL =
-                `https://cdn.discordapp.com/embed/avatars/${Number(user.id) % 5}.png`;
         }
 
-        accountArea.innerHTML = `
-            <a href="#" title="${user.username}">
-                <img
-                    src="${avatarURL}"
-                    alt="${user.username}"
-                    style="
-                        width:42px;
-                        height:42px;
-                        border-radius:50%;
-                        object-fit:cover;
-                        vertical-align:middle;
-                    "
-                >
-            </a>
-        `;
-    } catch (error) {
-        console.error("Login check failed:", error);
-    }
-}
 
-checkLogin();
-</script>
+        /*
+         * Check if the user is already logged in
+         */
+        async function checkLogin() {
+
+            try {
+
+                const response = await fetch(
+                    API_URL + "/me",
+                    {
+                        credentials: "include"
+                    }
+                );
+
+
+                if (!response.ok) {
+                    return;
+                }
+
+
+                const user = await response.json();
+
+
+                /*
+                 * User is not logged in
+                 */
+                if (!user.loggedIn) {
+                    return;
+                }
+
+
+                /*
+                 * Hide Login button
+                 */
+                const loginButton =
+                    document.getElementById("loginButton");
+
+                if (loginButton) {
+                    loginButton.style.display = "none";
+                }
+
+
+                /*
+                 * Account area
+                 */
+                const accountArea =
+                    document.getElementById("account-area");
+
+
+                /*
+                 * Create Discord avatar URL
+                 */
+                let avatarURL;
+
+
+                if (user.avatar) {
+
+                    avatarURL =
+                        `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`;
+
+                } else {
+
+                    avatarURL =
+                        `https://cdn.discordapp.com/embed/avatars/${Number(user.id) % 5}.png`;
+
+                }
+
+
+                /*
+                 * Show user's Discord avatar
+                 */
+                accountArea.innerHTML = `
+
+                    <a
+                        href="#"
+                        title="${user.username}"
+                    >
+
+                        <img
+                            src="${avatarURL}"
+                            alt="${user.username}"
+                        >
+
+                    </a>
+
+                `;
+
+
+                /*
+                 * Show dashboard
+                 */
+                const dashboard =
+                    document.getElementById("dashboard");
+
+                if (dashboard) {
+                    dashboard.style.display = "block";
+                }
+
+
+                /*
+                 * Update welcome message
+                 */
+                const welcomeText =
+                    document.getElementById("welcomeText");
+
+                if (welcomeText) {
+
+                    welcomeText.textContent =
+                        "Logged in as " +
+                        user.username +
+                        ".";
+
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "Login check failed:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        /*
+         * Run login check when the page loads
+         */
+        checkLogin();
+
+    </script>
 
 </body>
 </html>
+```
