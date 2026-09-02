@@ -890,30 +890,30 @@
 
 
                 document.getElementById(
-                    "profile-name"
-                ).textContent =
-                    data.user?.username || "Discord User";
+    "profile-name"
+).textContent =
+    data.username || "Discord User";
 
 
-                if (data.user?.avatar) {
+if (data.avatar) {
 
-                    document.getElementById(
-                        "profile-avatar"
-                    ).src =
-                        "https://cdn.discordapp.com/avatars/" +
-                        data.user.id +
-                        "/" +
-                        data.user.avatar +
-                        ".png?size=128";
+    document.getElementById(
+        "profile-avatar"
+    ).src =
+        "https://cdn.discordapp.com/avatars/" +
+        data.id +
+        "/" +
+        data.avatar +
+        ".png?size=128";
 
-                } else {
+} else {
 
-                    document.getElementById(
-                        "profile-avatar"
-                    ).src =
-                        "https://cdn.discordapp.com/embed/avatars/0.png";
+    document.getElementById(
+        "profile-avatar"
+    ).src =
+        "https://cdn.discordapp.com/embed/avatars/0.png";
 
-                }
+}
 
 
                 await loadGuilds();
